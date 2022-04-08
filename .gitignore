@@ -130,3 +130,6 @@ dmypy.json
 
 # Custom
 SOL*
+lightning_logs/
+runs/
+saved_models/
