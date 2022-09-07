@@ -1,6 +1,6 @@
 # Assignment 1
 
-This assignment covers Linear Regression, Gradient Descent, Linear Discriminant Analysis, Logistic Regression, and Naive Bayes. These are classical methods that are very useful depending on your dataset, even if they are only used as a baseline.
+This assignment covers Linear Regression and Gradient Descent. These are classical methods that are very useful depending on your dataset, even if they are only used as a baseline.
 
 These models have been implemented over and over again and are available in many popular machine learning frameworks. It is important to implement the models yourself so that you gain a deeper understanding of them.
 
@@ -8,7 +8,7 @@ These models have been implemented over and over again and are available in many
 
 The Iris flower dataset (https://en.wikipedia.org/wiki/Iris_flower_data_set) was organized by Ronald Fisher in 1936.
 It is a commonly used dataset for introductory machine learning concepts.
-You will use this dataset for both classification and regression.
+You will use this dataset for fitting and evaluating your regression model.
 
 ### 1.1 Preparing the Data
 
