@@ -133,3 +133,5 @@ SOL*
 lightning_logs/
 runs/
 saved_models/
+
+archive/
