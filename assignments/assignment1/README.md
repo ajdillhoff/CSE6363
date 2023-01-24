@@ -1,4 +1,4 @@
-# Assignment 1
+# CSE 6363: Assignment 1
 
 This assignment covers Linear Regression and Gradient Descent. Linear Regression is a method of predicting real values given some input. Gradient descent is the algorithm we will use to optimize our linear model.
 
@@ -6,22 +6,23 @@ These models have been implemented over and over again and are available in many
 
 ## 1. Implementation of the `LinearRegression` class
 
-Before evaluating any data, we need some code to actually `fit`, `predict`, and `score` samples. This will be implemented in `LinearRegression.py` provided in this repository. The skeleton of the class is already there [TODO: Create class]. In part 1, you will need to implement the `fit`, `predict`, and `score` functions.
+Before evaluating any data, we need some code to actually `fit`, `predict`, and `score` samples. This will be implemented in `LinearRegression.py` provided in this repository. The skeleton of the class is already there. In part 1, you will need to implement the `fit`, `predict`, and `score` functions.
 
 After implementing these 3 functions, you will be able to use this model simply with any regression task.
 
 ### 1.2 The `fit` method
 
-The `fit` method should accept 5 parameters:
+The `fit` method should accept 6 parameters:
 1. the input data
 2. the target values
-3. `regularization, int` - The factor of L2 regularization to add, default to 0
-4. `max_epochs, int` - The maximum number of times the model should train through the entire training set
-5. `patience, int` - The number of epochs to wait for the validation set to decrease
+3. `batch_size, int` - The size of each batch during training
+4. `regularization, int` - The factor of L2 regularization to add, default to 0
+5. `max_epochs, int` - The maximum number of times the model should train through the entire training set
+6. `patience, int` - The number of epochs to wait for the validation set to decrease
 
 Other parameters can be added as long as they are optional.
 
-This method should use gradient descent to optimize the model parameters using mean squared error as the loss function. So that the model will converge to a solution, early stopping must be used. To do this, set aside 10% of the training data as a validation set. After each step of gradient descent, evaluate the loss on the validation set. If the loss on the validation set increases for 5 consecutive steps, stop training. If it decreases, save the current model parameters. After training is complete, used the saved parameters to set the model parameters.
+This method should use gradient descent to optimize the model parameters using mean squared error as the loss function. So that the model will converge to a solution, early stopping must be used. To do this, set aside 10% of the training data as a validation set. After each step of gradient descent, evaluate the loss on the validation set. If the loss on the validation set increases for 3 consecutive steps, stop training. If it decreases, save the current model parameters. After training is complete, used the saved parameters to set the model parameters.
 
 ### 1.3 The `predict` method
 
@@ -50,11 +51,11 @@ where $n$ is the number of samples, $m$ is the output size, $y_i$ is the target 
 
 ## 2. Regression with a single output
 
-### 2.1 The Iris Dataset
-
 The Iris flower dataset (https://en.wikipedia.org/wiki/Iris_flower_data_set) was organized by Ronald Fisher in 1936. It is a commonly used dataset for introductory machine learning concepts. You will use this dataset for fitting and evaluating your regression model.
 
-### 2.2 Preparing the Data
+**The training and testing should be contained in a single evaluation script so that the results can be easily reproduced.**
+
+### 2.1 Preparing the Data
 
 Much of machine learning is in understanding the data you are working with. For our regression task, we want to predict continuous outputs given some input feature(s).
 
@@ -70,13 +71,13 @@ In this section of the assignment, you will create 4 different regression models
 
 To begin, load the data using `scikit-learn`. In order to verify the models that you will create in the following two sections, you will need to take some portion of the dataset and reserve it for testing. Randomly select 10% of the dataset, ensuring an even split of each class. This will be your **test** set. Note that this is different than the random 10% that is taken from the training set when in the `fit` method. The rest of the data will serve as your **training** set.
 
-Select 4 different combinations of input and output features to use to train 4 different models. For example, one model could predict the petal width given petal length and sepal width. Another could predict sepal length using only petal features. It does not matter which combination you choose as long as you have 4 unique combinations.
+### 2.2 Training
 
-### 2.3 Training
+Select 4 different combinations of input and output features to use to train 4 different models. For example, one model could predict the petal width given petal length and sepal width. Another could predict sepal length using only petal features. It does not matter which combination you choose as long as you have 4 unique combinations.
 
 Your models should be trained using batch gradient descent with a batch size (optional parameter) of 32 using mean squared error as your loss function.
 
-For each model, train for $n = 100$ steps (optional parameter) OR until the loss on the validation set increases for a number of consecutive epochs determined by an optional parameter `patience` (default to 3).
+For each model, train for $n = 100$ steps (optional parameter) OR until the loss on the validation set increases for a number of consecutive epochs determined by `patience` (default to 3).
 
 As each model trains, record the loss averaged over the batch size for each **step**. A single step is the processing of a single batch. One way to save this data is to either return an array from the fit method or save it as an internal class member that can be retrieved after training is complete.
 
@@ -86,7 +87,7 @@ To observe the effects of regularization, pick one of your trained models and in
 
 **Record these values into your report so they can be verified.**
 
-### 2.4 Testing
+### 2.3 Testing
 
 For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously.
 
@@ -96,17 +97,23 @@ In your report, briefly describe which input feature is most predictive of its c
 
 Some tasks will require a model that can produce multiple outputs. One such task is predicting traffic flow for 36 spatial locations 15 minutes into the future. The output of your linear regression model will a 36 dimensional vector representing the relative traffic congestion of each location.
 
+**The training and testing should be contained in a single evaluation script so that the results can be easily reproduced.**
+
 ### 3.1 Preparing the Data
 
-To get started, download the dataset from [TODO: provide link]. A notebook has been provided which demonstrates loading the data into a `numpy` array.
+To get started, download the dataset from [here](https://archive-beta.ics.uci.edu/dataset/608/traffic+flow+forecasting) and extract the `.mat` file into the local `data` directory. A notebook has been provided which demonstrates loading the data into a `numpy` array.
 
 ### 3.2 Training
 
-Use your linear regression class from part 1 to train a model using the provided data. Feel free to choose whatever amount of regularization is that you feel is necessary. Allow the model to train until the validation error stops increasing.
+Use your linear regression class from part 1 to train a model using the provided data. Feel free to choose whatever hyperparameters you think would work best for this. It is recommended that you try a range of possible combinations to see what yields the best performance.
+
+**In your report, describe your strategy for training.**
 
 ### 3.3 Testing
 
-This dataset already has a test set that is pre-partitioned. Use that test set to evaluate your trained model's performance. Record the result and include it in your report.
+This dataset already has a test set prepared. Use that test set to evaluate your trained model's performance.
+
+**Record the result and include it in your report.**
 
 ### 3.4 BONUS: Improving Accuracy
 
