@@ -1,23 +1,8 @@
 import torch
 from torch import nn
+import torchmetrics
 import torch.nn.functional as F
 import pytorch_lightning as pl
-
-
-def accuracy(output, target, topk=(1,)):
-    """Computes the precision@k for the specified values of k"""
-    maxk = max(topk)
-    batch_size = target.size(0)
-
-    _, pred = output.topk(maxk, 1, True, True)
-    pred = pred.t()
-    correct = pred.eq(target.view(1, -1).expand_as(pred))
-
-    res = []
-    for k in topk:
-        correct_k = correct[:k].view(-1).float().sum(0)
-        res.append(correct_k.mul_(100.0 / batch_size))
-    return res
 
 
 class LeNetModel(pl.LightningModule):
@@ -40,6 +25,8 @@ class LeNetModel(pl.LightningModule):
             nn.Linear(84, 10),
         )
 
+        self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=10)
+
     def forward(self, x):
         x = self.features(x)
         x = x.view(x.shape[0], -1)
@@ -59,9 +46,9 @@ class LeNetModel(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
 
-        prec = accuracy(y_hat, y)
+        self.accuracy(y_hat, y)
 
-        self.log("val_accuracy", prec[0])
+        self.log("val_accuracy", self.accuracy)
         self.log("val_loss", loss)
 
     def test_step(self, batch, batch_idx):
@@ -69,9 +56,9 @@ class LeNetModel(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
 
-        prec = accuracy(y_hat, y)
+        self.accuracy(y_hat, y)
 
-        self.log("test_accuracy", prec[0])
+        self.log("test_accuracy", self.accuracy)
         self.log("test_loss", loss)
 
     def configure_optimizers(self):

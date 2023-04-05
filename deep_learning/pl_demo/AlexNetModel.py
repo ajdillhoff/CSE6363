@@ -1,32 +1,21 @@
-import torch
-from torch import nn
-import torch.nn.functional as F
+import torchvision.models as models
 import pytorch_lightning as pl
 import torchmetrics
+import torch.nn.functional as F
+import torch.nn as nn
+import torch
 
 
-class BaselineModel(pl.LightningModule):
+class AlexNetModel(pl.LightningModule):
     def __init__(self):
         super().__init__()
-
-        self.estimator = nn.Sequential(
-            nn.Linear(32 * 32 * 3, 1024),
-            nn.ReLU(),
-            nn.Linear(1024, 512),
-            nn.ReLU(),
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 10)
-        )
+        self.model = models.alexnet(pretrained=False)
+        self.model.classifier[6] = nn.Linear(4096, 10)
 
         self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=10)
 
     def forward(self, x):
-        x = x.view(x.shape[0], -1)
-
-        return self.estimator(x)
+        return self.model(x)
 
     def training_step(self, batch, batch_idx):
         x, y = batch
