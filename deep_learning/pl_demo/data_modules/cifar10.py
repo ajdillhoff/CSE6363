@@ -17,6 +17,7 @@ class CIFAR10DataModule(pl.LightningDataModule):
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             train_transforms = transforms.Compose([
+                transforms.AutoAugment(transforms.AutoAugmentPolicy.CIFAR10),
                 transforms.Resize(256),
                 transforms.CenterCrop(224),
                 transforms.ToTensor(),
