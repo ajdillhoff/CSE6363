@@ -7,31 +7,35 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.tuner import Tuner
+from pytorch_lightning.cli import LightningCLI
 
 from data_modules.food101 import Food101DataModule
 from ResNetModel import ResNetModel
 
-def main(args):
 
-    model = ResNetModel(101, 1e-3)
+def cli_main():
 
-    # Add EarlyStopping
-    early_stop_callback = EarlyStopping(monitor="val_loss",
-                                        mode="min",
-                                        patience=5)
+    cli = LightningCLI(ResNetModel, Food101DataModule)
 
-    # Configure Checkpoints
-    checkpoint_callback = ModelCheckpoint(
-        monitor="val_loss",
-        mode="min"
-    )
+    # model = ResNetModel(101, 1e-4)
 
-    trainer = pl.Trainer(callbacks=[early_stop_callback, checkpoint_callback], max_epochs=-1)
-    food101 = Food101DataModule("~/Data/Food101/", batch_size=256, num_workers=8)
-    # tuner = Tuner(trainer)
-    # tuner.lr_find(model, food101)
-    trainer.fit(model=model, datamodule=food101)
-    trainer.test(model, datamodule=food101)
+    # # Add EarlyStopping
+    # early_stop_callback = EarlyStopping(monitor="val_loss",
+    #                                     mode="min",
+    #                                     patience=5)
+
+    # # Configure Checkpoints
+    # checkpoint_callback = ModelCheckpoint(
+    #     monitor="val_loss",
+    #     mode="min"
+    # )
+
+    # trainer = pl.Trainer(callbacks=[early_stop_callback, checkpoint_callback], max_epochs=-1)
+    # food101 = Food101DataModule("~/Data/Food101/", batch_size=64, num_workers=12)
+    # # tuner = Tuner(trainer)
+    # # tuner.lr_find(model, food101)
+    # trainer.fit(model=model, datamodule=food101)
+    # trainer.test(model, datamodule=food101)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    cli_main()
