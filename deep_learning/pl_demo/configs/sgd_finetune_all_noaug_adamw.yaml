@@ -63,26 +63,6 @@ data:
   augment: true
 ckpt_path: null
 optimizer:
-  class_path: torch.optim.SGD
+  class_path: torch.optim.AdamW
   init_args:
-    lr: 0.01
-    momentum: 0.9
-    dampening: 0.0
-    weight_decay: 0.0
-    nesterov: false
-    maximize: false
-    foreach: null
-    differentiable: false
-lr_scheduler:
-  class_path: pytorch_lightning.cli.ReduceLROnPlateau
-  init_args:
-    monitor: val_loss
-    mode: min
-    factor: 0.1
-    patience: 3
-    threshold: 0.0001
-    threshold_mode: rel
-    cooldown: 0
-    min_lr: 0.0
-    eps: 1.0e-08
-    verbose: false
+    lr: 0.001

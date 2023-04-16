@@ -79,7 +79,7 @@ lr_scheduler:
     monitor: val_loss
     mode: min
     factor: 0.1
-    patience: 5
+    patience: 3
     threshold: 0.0001
     threshold_mode: rel
     cooldown: 0

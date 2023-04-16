@@ -7,7 +7,7 @@ import torch
 
 
 class ResNetModel(pl.LightningModule):
-    def __init__(self, num_classes, finetune="none"):
+    def __init__(self, num_classes=101, finetune="none"):
         super().__init__()
         self.num_classes = num_classes
         self.finetune = finetune
@@ -61,13 +61,3 @@ class ResNetModel(pl.LightningModule):
 
         self.log("test_accuracy", self.accuracy)
         self.log("test_loss", loss)
-
-    # def configure_optimizers(self):
-    #     optimizer = torch.optim.SGD(self.parameters(), lr=self.lr, momentum=0.9, weight_decay=1e-4)
-    #     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", patience=5)
-
-    #     return {
-    #         "optimizer": optimizer,
-    #         "lr_scheduler": scheduler,
-    #         "monitor": "val_loss"
-    #     }

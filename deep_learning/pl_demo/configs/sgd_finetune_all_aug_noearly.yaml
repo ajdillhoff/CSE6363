@@ -7,20 +7,6 @@ trainer:
   num_nodes: 1
   precision: 32-true
   logger: null
-  callbacks:
-    class_path: pytorch_lightning.callbacks.EarlyStopping
-    init_args:
-      monitor: val_loss
-      min_delta: 0.0
-      patience: 10
-      verbose: false
-      mode: min
-      strict: true
-      check_finite: true
-      stopping_threshold: null
-      divergence_threshold: null
-      check_on_train_epoch_end: null
-      log_rank_zero_only: false
   fast_dev_run: false
   max_epochs: -1
   min_epochs: null
@@ -65,7 +51,7 @@ ckpt_path: null
 optimizer:
   class_path: torch.optim.SGD
   init_args:
-    lr: 0.01
+    lr: 0.001
     momentum: 0.9
     dampening: 0.0
     weight_decay: 0.0
@@ -79,7 +65,7 @@ lr_scheduler:
     monitor: val_loss
     mode: min
     factor: 0.1
-    patience: 3
+    patience: 5
     threshold: 0.0001
     threshold_mode: rel
     cooldown: 0
