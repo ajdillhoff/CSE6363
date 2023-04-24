@@ -7,33 +7,32 @@ import torch
 
 
 class ResNetModel(pl.LightningModule):
-    def __init__(self, num_classes, lr=1e-4):
+    def __init__(self, num_classes=101, finetune="none"):
         super().__init__()
         self.num_classes = num_classes
-        self.lr = lr
+        self.finetune = finetune
 
-        # init a pretrained resnet
-        backbone = models.resnet50(weights="DEFAULT")
-        num_filters = backbone.fc.in_features
-        layers = list(backbone.children())[:-1]
-        self.feature_extractor = nn.Sequential(*layers)
+        if self.finetune == "none":
+            # init a resnet from scratch
+            self.feature_extractor = models.resnet50(weights=None, num_classes=num_classes)
+            self.classifier = nn.Identity()
+        else:
+            # init a pretrained resnet
+            backbone = models.resnet50(weights="DEFAULT")
+            num_filters = backbone.fc.in_features
+            layers = list(backbone.children())[:-1]
+            self.feature_extractor = nn.Sequential(*layers)
 
-        # use the pretrained model to classify food101 (101 image classes)
-        self.classifier = nn.Linear(num_filters, num_classes)
+            # use the pretrained model to classify food101 (101 image classes)
+            self.classifier = nn.Linear(num_filters, num_classes)
 
         self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes)
 
     def forward(self, x):
-        # Fine-tuning classifier
-        self.feature_extractor.eval()
-        with torch.no_grad():
-            representations = self.feature_extractor(x).flatten(1)
-        x = self.classifier(representations)
-        return x
-
-        # # Fine-tuning the entire model
-        # x = self.feature_extractor(x).flatten(1)
-        # return self.classifier(x)
+        if self.finetune == "none":
+            return self.feature_extractor(x)
+        else:
+            return self.classifier(self.feature_extractor(x).flatten(1))
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -62,7 +61,3 @@ class ResNetModel(pl.LightningModule):
 
         self.log("test_accuracy", self.accuracy)
         self.log("test_loss", loss)
-
-    def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=self.lr)
-        return optimizer
