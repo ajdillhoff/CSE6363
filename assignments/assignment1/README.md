@@ -122,7 +122,7 @@ For the first classifier, implement a `LogisticRegression` class similar to how 
 
 ## 2.2 Linear Discriminant Analysis
 
-The second model you will explore in this assignment is Linear Discriminant Analysis. Implement both a `fit` and `predict` method following the details [https://dillhoffaj.utasites.cloud/posts/linear_discriminant_analysis](described here.)
+The second model you will explore in this assignment is Linear Discriminant Analysis. Implement both a `fit` and `predict` method following the details [https://dillhoffaj.utasites.cloud/posts/linear_discriminant_analysis] (described here.)
 
 The parameter update equations were derived via Maximum Likelihood Estimation and can be estimated directly from the data. You do not need to create a covariance matrix for each class. Instead, use a shared covariance matrix which is computed as
 
