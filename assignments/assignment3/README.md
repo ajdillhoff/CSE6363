@@ -1,0 +1,147 @@
+This assignment covers neural networks, backpropagation, and cross-validation techniques.
+
+# Neural Network Library
+
+In the first part of this assignment, you will create a neural network library.
+The library will be made up of documented classes and functions that allow users to easily construct
+a neural network with an arbitrary number of layers and nodes. Through implementing
+this library, you will understand more clearly the atomic components that make up a
+basic neural network.
+
+## The `Layer` Class
+
+For the layers you will create in this assignment, it is worth it to create a parent class
+named `Layer` which defined the forward and backward functions that are used by all layers.
+In this way, we can take advantage of polymorphism to easily compute the forward and
+backward passes of the entire network.
+
+## `Linear` Layer
+
+Create a class that implements a linear layer. The class should inherit the `Layer` class
+and implement both a `forward` and `backward` function.
+For a given input, the forward pass is computed as
+
+$$
+f(\mathbf{x}; \mathbf{w}) = \mathbf{x} \mathbf{w}^T + \mathbf{b}.
+$$
+
+Here, $\mathbf{x} \in \mathbb{R}^{n \times d}$, $\mathbf{w} \in \mathbb{R}^{h \times d}$,
+and $\mathbf{b} \in \mathbb{R}^h$,
+where $n$ is the number of samples, $d$ is the number of input features, and $h$
+is the number of output features.
+
+The backward pass should compute the gradient with respect to the weights and bias:
+
+$$
+\frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{x}\\
+\frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{1}
+$$
+
+This is then multiplied with the gradients computed by the layer ahead of this one.
+
+Since there may be multiple layers, it should additionally compute $\frac{df}{d\mathbf{x}}$
+to complete a chain of backward passes.
+
+## `Sigmoid` Function
+
+Create a class that implements the logistic sigmoid function.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+It is useful to store the output of forward pass of this layer
+as a class member so that it may be reused when calling `backward`.
+
+## Hyperbolic Tangent Function
+
+Create a class that implements the hyperbolic tangent function.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+## The `Softmax` Function
+
+Create a class that implements the `softmax` function.
+The class should inherit the `Layer` class and implement
+the `forward` and `backward` functions.
+
+Since we are only using this with cross-entropy loss,
+you can simplify the `backward` pass so that it only passes
+the gradient input.
+
+The softmax function is defined as
+
+$$
+p_k = \frac{\exp{f_k}}{\sum_j \exp{f_j}}.
+$$
+
+## Cross-Entropy Loss
+
+Create a class that implements cross-entropy loss.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+Feel free to use the code defined in the class examples when integrating this with your library.
+
+## The `Sequential` Class
+
+In order to create a clean interface that includes multiple layers, you will need to create
+a class that contains a list of layers which make up the network.
+The `Sequential` class will contain a list of layers.
+New layers can be added to it by appending them to the current list.
+This class will also inherit from the `Layer` class so that it can call forward
+and backward as required.
+
+## Saving and Loading
+
+Implement a weight saving and loading feature for a constructed network such that all
+model weights can be saved to and loaded form a file. This will enable trained models to
+be stored and shared.
+
+# Testing your library
+
+Construct a neural network with 1 hidden layer of 2 nodes in order to solve the XOR
+problem. Construct the input using `numpy`.
+You can reference the code we used for multi-layer perceptrons in class to help.
+Train and verify that your model can solve the XOR problem.
+
+This may take many attempts to converge to a solution depending on your architecture,
+choice of activation function, learning rate, and other factors. Attempt to solve this
+problem with the architecture described above using sigmoid activations and then again
+using hyperbolic tangent activations. In your notebook, describe which one was easier to
+train for this problem.
+
+Save the weights as `XOR_solved.w`.
+
+## Predicting Trip Duration
+
+In the second part of the assignment, you will use your neural network library to construct
+several networks for taxi trip duration ([link to dataset](https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data)). There are 1,458,644 training records and
+625,134 testing records. You should randomly select 5% of the training images to use as a
+validation set.
+
+### Dataset Preprocessing
+
+Some of the features in this dataset may not be well formatted for use in a neural network.
+They also may not be useful for predicting the trip duration. You should experiment with
+different features and transformations to see which ones work best. You may also want to
+experiment with different normalization techniques.
+
+**In a separate document**, describe the features you used and how you transformed them. Include
+any plots that you used to help you make your decisions.
+
+### Model Selection
+
+In this part, you should experiment with the number of layers and nodes per layer as you wish.
+Use the loss of the validation set to guide your selection of hyperparameters. Experiment
+with at least 3 configurations of hyperparameters, plotting the training and validation
+loss as you train each configuration. Stop training when the loss does not improve after 3
+steps (**early stopping**). In your notebook, include the training/validation plots with each
+choice of hyperparameters.
+
+Once you have trained at least 3 different models, evaluate each one on the test set.
+Include the test accuracy with your output.
+
+# Submission
+
+Create a zip file that includes all relevant code (or a single notebook if applicable).
+The TA should be able to easily run the code to reproduce all plots and results.
+Include any additional instructions, if necessary.
