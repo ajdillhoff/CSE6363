@@ -111,17 +111,29 @@ train for this problem.
 
 Save the weights as `XOR_solved.w`.
 
-## Handwritten Digit Recognition
+## Predicting Trip Duration
 
 In the second part of the assignment, you will use your neural network library to construct
-several networks for handwritten digit recognition. There are 60000 training images and
-10000 testing images. You should randomly select 10% of the training images to use as a
+several networks for taxi trip duration ([link to dataset](https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data)). There are 1,458,644 training records and
+625,134 testing records. You should randomly select 5% of the training images to use as a
 validation set.
 
-In this part, you can experiment with the number of layers and nodes per layer as you wish.
+### Dataset Preprocessing
+
+Some of the features in this dataset may not be well formatted for use in a neural network.
+They also may not be useful for predicting the trip duration. You should experiment with
+different features and transformations to see which ones work best. You may also want to
+experiment with different normalization techniques.
+
+**In a separate document**, describe the features you used and how you transformed them. Include
+any plots that you used to help you make your decisions.
+
+### Model Selection
+
+In this part, you should experiment with the number of layers and nodes per layer as you wish.
 Use the loss of the validation set to guide your selection of hyperparameters. Experiment
 with at least 3 configurations of hyperparameters, plotting the training and validation
-loss as you train each configuration. Stop training when the loss does not improve after 5
+loss as you train each configuration. Stop training when the loss does not improve after 3
 steps (**early stopping**). In your notebook, include the training/validation plots with each
 choice of hyperparameters.
 

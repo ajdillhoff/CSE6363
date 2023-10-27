@@ -1,16 +1,16 @@
 # CSE 6363: Assignment 1
 
-This assignment covers Linear Regression and Gradient Descent. Linear Regression is a method of predicting real values given some input. Gradient descent is the algorithm we will use to optimize our linear model.
+This assignment covers Linear Models for regression and classification. Linear Regression is a method of predicting real values given some input. Logistic Regression and Linear Discriminant Analysis will be used as classifiers.
 
 These models have been implemented over and over again and are available in many popular machine learning frameworks. It is important to implement the models yourself so that you gain a deeper understanding of them.
 
-## 1. Implementation of the `LinearRegression` class
+# 1 Implementation of the `LinearRegression` class
 
 Before evaluating any data, we need some code to actually `fit`, `predict`, and `score` samples. This will be implemented in `LinearRegression.py` provided in this repository. The skeleton of the class is already there. In part 1, you will need to implement the `fit`, `predict`, and `score` functions.
 
 After implementing these 3 functions, you will be able to use this model simply with any regression task.
 
-### 1.2 The `fit` method
+## 1.2 The `fit` method
 
 The `fit` method should accept 6 parameters:
 1. the input data
@@ -24,7 +24,7 @@ Other parameters can be added as long as they are optional.
 
 This method should use gradient descent to optimize the model parameters using mean squared error as the loss function. So that the model will converge to a solution, early stopping must be used. To do this, set aside 10% of the training data as a validation set. After each step of gradient descent, evaluate the loss on the validation set. If the loss on the validation set increases for 3 consecutive steps, stop training. If it decreases, save the current model parameters. After training is complete, used the saved parameters to set the model parameters.
 
-### 1.3 The `predict` method
+## 1.3 The `predict` method
 
 The `predict` method should accept 1 parameter:
 1. the input data
@@ -35,7 +35,7 @@ $$
 \mathbf{y} = X W + \mathbf{b} \in \mathbb{R}^{n \times m}
 $$
 
-### 1.4 The `score` method
+## 1.4 The `score` method
 
 The `score` method should accept 2 parameters:
 1. the input data
@@ -49,13 +49,19 @@ $$
 
 where $n$ is the number of samples, $m$ is the output size, $y_i$ is the target value for the $i$th sample, and $\hat{y}_i$ is the predicted value for the $i$th sample.
 
-## 2. Regression with a single output
+## 1.5 Saving and Loading Weights
+
+After training, the model parameters should be saved to a file. The `save` method should accept a file path. This method should save the model parameters to the given file path. The model parameters should be saved in a format that can be easily loaded back into the model.
+
+The `load` method should also accept a file path and load the model parameters accordingly.
+
+## 1.6 Regression with a single output
 
 The Iris flower dataset (https://en.wikipedia.org/wiki/Iris_flower_data_set) was organized by Ronald Fisher in 1936. It is a commonly used dataset for introductory machine learning concepts. You will use this dataset for fitting and evaluating your regression model.
 
 **The training and testing should be contained in a single evaluation script so that the results can be easily reproduced.**
 
-### 2.1 Preparing the Data
+### 1.6.1 Preparing the Data
 
 Much of machine learning is in understanding the data you are working with. For our regression task, we want to predict continuous outputs given some input feature(s).
 
@@ -71,7 +77,7 @@ In this section of the assignment, you will create 4 different regression models
 
 To begin, load the data using `scikit-learn`. In order to verify the models that you will create in the following two sections, you will need to take some portion of the dataset and reserve it for testing. Randomly select 10% of the dataset, ensuring an even split of each class. This will be your **test** set. Note that this is different than the random 10% that is taken from the training set when in the `fit` method. The rest of the data will serve as your **training** set.
 
-### 2.2 Training
+### 1.6.2 Training
 
 Select 4 different combinations of input and output features to use to train 4 different models. For example, one model could predict the petal width given petal length and sepal width. Another could predict sepal length using only petal features. It does not matter which combination you choose as long as you have 4 unique combinations.
 
@@ -87,37 +93,72 @@ To observe the effects of regularization, pick one of your trained models and in
 
 **Record these values into your report so they can be verified.**
 
-### 2.3 Testing
+Create a separate training script for each model that you created. Name the scripts `train_regression1.py`, `train_regression2.py`, etc. This should include training the model, saving the model parameters, and plotting the loss.
 
-For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously.
+### 1.6.3 Testing
+
+For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously. This should be implemented as 4 separate scripts. Each script should load the model parameters from the respective model and then evaluate the model on the test set. The mean squared error should be printed to the console. Name the scripts `eval_regression1.py`, `eval_regression2.py`, etc.
 
 In your report, briefly describe which input feature is most predictive of its corresponding output feature based on your experiments.
 
-## 3. Regression with Multiple Outputs
+## 1.7 Regression with Multiple Outputs
 
-Some tasks will require a model that can produce multiple outputs. One such task is predicting traffic flow for 36 spatial locations 15 minutes into the future. The output of your linear regression model will a 36 dimensional vector representing the relative traffic congestion of each location.
+In the previous section, you created 4 different regression models. Each model predicted a single output value given some input features. In this section, you will create a single model that predicts the petal length and width given the sepal length and width.
 
-**The training and testing should be contained in a single evaluation script so that the results can be easily reproduced.**
+Use similar data preparation steps that you did in the previous section. The only difference is that you will need to predict 2 output values instead of 1.
 
-### 3.1 Preparing the Data
+### Error Function for Multiple Outputs
 
-To get started, download the dataset from [here](https://archive-beta.ics.uci.edu/dataset/608/traffic+flow+forecasting) and extract the `.mat` file into the local `data` directory. A notebook has been provided which demonstrates loading the data into a `numpy` array.
+The error function for multiple outputs is the same as the error function for a single output. The only difference is that the predicted values and target values are matrices instead of vectors. Given $n$ samples with $d$ features each and $m$ output values, let $X \in \mathbb{R}^{n \times d}$ be the input data, $W \in \mathbb{R}^{d \times m}$ be the model parameters, and $\mathbf{b} \in \mathbb{R}^{n \times m}$ be the bias terms. The predicted values are given by:
 
-### 3.2 Training
+$$
+\mathbf{y} = X W + \mathbf{b} \in \mathbb{R}^{n \times m}
+$$
 
-Use your linear regression class from part 1 to train a model using the provided data. Feel free to choose whatever hyperparameters you think would work best for this. It is recommended that you try a range of possible combinations to see what yields the best performance.
+The mean squared error is given by:
 
-**In your report, describe your strategy for training.**
+$$
+\text{MSE} = \frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^m \left( y_{ij} - \hat{y}_{ij} \right)^2
+$$
 
-### 3.3 Testing
+where $n$ is the number of samples, $m$ is the output size, $y_{ij}$ is the target value for the $i$-th sample and $j$-th output, and $\hat{y}_{ij}$ is the predicted value for the $i$-th sample and $j$-th output.
 
-This dataset already has a test set prepared. Use that test set to evaluate your trained model's performance.
+# 2 Classification
 
-**Record the result and include it in your report.**
+Similar to part 1, you will need to create a class for each classification method. These classes should implement both a `predict` and `fit` method.
 
-### 3.4 BONUS: Improving Accuracy
+The `fit` method should take as input an `ndarray` of data samples and target values (the classes). It should then optimize the set of parameters following the respective training method for that classification method.
 
-In the paper ["Spatial Auto-regressive Dependence Interpretable Learning Based on Spatial Topological Constraints"](https://dl.acm.org/doi/pdf/10.1145/3339823) by Zhao et al., they report a best error of 0.0454 RMSE (Root Mean Squared Error) using a linear regression model. If your implementation can get close to or lower than this error, an extra 20 bonus points is yours.
+The `predict` method should take as input an `ndarray` of samples to predict.
+
+For each classification method that is implemented, you will need to compare 3 variants of input features:
+1. petal length/width
+2. sepal length/width
+3. all features
+
+For the first two, include visualizations of the classifier using `plot_decision_regions` from `mlxtend` (https://github.com/rasbt/mlxtend). This plotting function works with your trained classifier, assuming you have implemented a `predict` method.
+
+## 2.1 Logistic Regression
+
+For the first classifier, implement a `LogisticRegression` class similar to how the `LinearRegression` class was implemented. The `fit` method should use either the normal equations or gradient descent to come up with an optimal set of parameters.
+
+## 2.2 Linear Discriminant Analysis
+
+The second model you will explore in this assignment is Linear Discriminant Analysis. Implement both a `fit` and `predict` method following the details [https://dillhoffaj.utasites.cloud/posts/linear_discriminant_analysis](described here.)
+
+The parameter update equations were derived via Maximum Likelihood Estimation and can be estimated directly from the data. You do not need to create a covariance matrix for each class. Instead, use a shared covariance matrix which is computed as
+
+$$
+\Sigma = \frac{1}{n} \sum_{k=1}^K n_k \Sigma_k,
+$$
+
+where $n$ is the total number of samples, $n_k$ is the number of samples belonging to class $k$, and $\Sigma_k$ is the covariance matrix for class $k$.
+
+## 2.3 Testing
+
+For each trained model, compute the accuracy on the test set that was set aside for each data variant. Since there are 3 variants, there should be 3 comparisons of Logistic Regression versus LDA. Implement each variant evaluation as a separate script. Name the scripts `eval_classifiers1.py`, `eval_classifiers2.py`, etc.
+
+These scripts should load the best trained weights, evaluate the accuracy on the test set, and print the accuracy to the console.
 
 # Submission
 
