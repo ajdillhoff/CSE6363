@@ -1,4 +1,4 @@
-# Assignment 4: Reinforcement Learning
+# Assignment 5: Reinforcement Learning
 
 ## (40 points) Part 1: Q-Learning and Policy Iteration on the Frozen Lake Environment
 
