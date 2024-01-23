@@ -89,13 +89,15 @@ As each model trains, record the loss averaged over the batch size for each **st
 
 **After each model trains, plot the loss against the step number and save it. These plots should also be added to your report.**
 
+### 1.6.3 Regularization
+
 To observe the effects of regularization, pick one of your trained models and inspect the weights. Train an identical model again, except this time you will add L2 regularization to the loss. Record the difference in parameters between the regularized and non-regularized model.
 
 **Record these values into your report so they can be verified.**
 
 Create a separate training script for each model that you created. Name the scripts `train_regression1.py`, `train_regression2.py`, etc. This should include training the model, saving the model parameters, and plotting the loss.
 
-### 1.6.3 Testing
+### 1.6.4 Testing
 
 For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously. This should be implemented as 4 separate scripts. Each script should load the model parameters from the respective model and then evaluate the model on the test set. The mean squared error should be printed to the console. Name the scripts `eval_regression1.py`, `eval_regression2.py`, etc.
 
@@ -142,21 +144,9 @@ For the first two, include visualizations of the classifier using `plot_decision
 
 For the first classifier, implement a `LogisticRegression` class similar to how the `LinearRegression` class was implemented. The `fit` method should use either the normal equations or gradient descent to come up with an optimal set of parameters.
 
-## 2.2 Linear Discriminant Analysis
+## 2.2 Testing
 
-The second model you will explore in this assignment is Linear Discriminant Analysis. Implement both a `fit` and `predict` method following the details [https://dillhoffaj.utasites.cloud/posts/linear_discriminant_analysis](described here.)
-
-The parameter update equations were derived via Maximum Likelihood Estimation and can be estimated directly from the data. You do not need to create a covariance matrix for each class. Instead, use a shared covariance matrix which is computed as
-
-$$
-\Sigma = \frac{1}{n} \sum_{k=1}^K n_k \Sigma_k,
-$$
-
-where $n$ is the total number of samples, $n_k$ is the number of samples belonging to class $k$, and $\Sigma_k$ is the covariance matrix for class $k$.
-
-## 2.3 Testing
-
-For each trained model, compute the accuracy on the test set that was set aside for each data variant. Since there are 3 variants, there should be 3 comparisons of Logistic Regression versus LDA. Implement each variant evaluation as a separate script. Name the scripts `eval_classifiers1.py`, `eval_classifiers2.py`, etc.
+For each trained model, compute the accuracy on the test set that was set aside for each data variant. Since there are 3 variants, there should be 3 comparisons of Logistic Regression. Implement each variant evaluation as a separate script. Name the scripts `eval_classifier1.py`, `eval_classifier2.py`, etc.
 
 These scripts should load the best trained weights, evaluate the accuracy on the test set, and print the accuracy to the console.
 
