@@ -51,7 +51,7 @@ def main():
         mode="min"
     )
 
-    trainer = pl.Trainer(callbacks=[early_stop_callback, checkpoint_callback])
+    trainer = pl.Trainer(accelerator='gpu', callbacks=[early_stop_callback, checkpoint_callback])
     trainer.fit(model=model, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
 
