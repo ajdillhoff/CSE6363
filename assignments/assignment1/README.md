@@ -77,11 +77,7 @@ In this section of the assignment, you will create 4 different regression models
 
 To begin, load the data using `scikit-learn`. In order to verify the models that you will create in the following two sections, you will need to take some portion of the dataset and reserve it for testing. Randomly select 10% of the dataset, ensuring an even split of each class. This will be your **test** set. Note that this is different than the random 10% that is taken from the training set when in the `fit` method. The rest of the data will serve as your **training** set.
 
-### 1.5.2 Multicollinearity
-
-
-
-### 1.5.3 Training
+### 1.5.2 Training
 
 Select 4 different combinations of input and output features to use to train 4 different models. For example, one model could predict the petal width given petal length and sepal width. Another could predict sepal length using only petal features. It does not matter which combination you choose as long as you have 4 unique combinations.
 
@@ -93,7 +89,7 @@ As each model trains, record the loss averaged over the batch size for each **st
 
 **After each model trains, plot the loss against the step number and save it. These plots should also be added to your report.**
 
-### 1.5.4 Regularization
+### 1.5.3 Regularization
 
 To observe the effects of regularization, pick one of your trained models and inspect the weights. Train an identical model again, except this time you will add L2 regularization to the loss. Record the difference in parameters between the regularized and non-regularized model.
 
@@ -101,7 +97,7 @@ To observe the effects of regularization, pick one of your trained models and in
 
 Create a separate training script for each model that you created. Name the scripts `train_regression1.py`, `train_regression2.py`, etc. This should include training the model, saving the model parameters, and plotting the loss.
 
-### 1.5.5 Testing
+### 1.5.4 Testing
 
 For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously. This should be implemented as 4 separate scripts. Each script should load the model parameters from the respective model and then evaluate the model on the test set. The mean squared error should be printed to the console. Name the scripts `eval_regression1.py`, `eval_regression2.py`, etc.
 

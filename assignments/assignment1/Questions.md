@@ -1,12 +1,7 @@
 # Linear Regression
 
-## Multicollinearity
-
-1. How does multicollinearity affect fitting the model parameters using the normal equations?
-2. How does it affect the gradient descent algorithm?
-
-## Regularization
-
-## Coefficient of Determination
+1. What are the pros and cons of using the normal equation to solve for the weights in linear regression as opposed to using gradient descent?
 
 # Logistic Regression
+
+1. Why is the softmax function used in multi-class logistic regression (Hint: the model itself produces logits)?
