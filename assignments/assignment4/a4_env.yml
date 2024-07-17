@@ -1,0 +1,11 @@
+name: cse6363a4
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch
+  - pytorch-cuda
+  - torchvision
+  - lightning
+  - ipykernel
+prefix: /home/alex/anaconda3/envs/cse6363a4
