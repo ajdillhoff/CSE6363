@@ -1,101 +1,145 @@
-For this assignment, we will be using the CIFAR-10 dataset which consists of 60,000 32x32 color images in 10 classes, with 6,000 images per class. There are 50,000 training images and 10,000 test images. The dataset is available from many places online, and a direct download link is available in Canvas. You can also find more information about the dataset at https://www.cs.toronto.edu/~kriz/cifar.html.
+This assignment covers neural networks, backpropagation, and cross-validation techniques.
 
-# Running the Benchmark Models
+# Neural Network Library
 
-Although you will not be graded based on your model's output, it is a good idea to reference the benchmark models to ensure that your implementation is correct. The benchmark models are available in the `assignment2/benchmarks` directory. You can run the benchmark models as follows:
+In the first part of this assignment, you will create a neural network library.
+The library will be made up of documented classes and functions that allow users to easily construct
+a neural network with an arbitrary number of layers and nodes. Through implementing
+this library, you will understand more clearly the atomic components that make up a
+basic neural network.
 
-```bash
-python assignment2/benchmark.py
-```
+## The `Layer` Class
 
-This may take a few minutes on your machine to run.
+For the layers you will create in this assignment, it is worth it to create a parent class
+named `Layer` which defined the forward and backward functions that are used by all layers.
+In this way, we can take advantage of polymorphism to easily compute the forward and
+backward passes of the entire network.
 
-# Downloading and Preprocessing the Data
+## `Linear` Layer
 
-After downloading the data, extract the batch files to the `cifar10` directory that is already in this repository. A function is provided in `assignment2/utils.py` to extract and load the data to `numpy` arrays. You can use this function to load the data as follows:
+Create a class that implements a linear layer. The class should inherit the `Layer` class
+and implement both a `forward` and `backward` function.
+For a given input, the forward pass is computed as
+
+$$
+f(\mathbf{x}; \mathbf{w}) = \mathbf{x} \mathbf{w}^T + \mathbf{b}.
+$$
+
+Here, $\mathbf{x} \in \mathbb{R}^{n \times d}$, $\mathbf{w} \in \mathbb{R}^{h \times d}$,
+and $\mathbf{b} \in \mathbb{R}^h$,
+where $n$ is the number of samples, $d$ is the number of input features, and $h$
+is the number of output features.
+
+The backward pass should compute the gradient with respect to the weights and bias:
+
+$$
+\frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{x}\\
+\frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{1}
+$$
+
+This is then multiplied with the gradients computed by the layer ahead of this one.
+
+Since there may be multiple layers, it should additionally compute $\frac{df}{d\mathbf{x}}$
+to complete a chain of backward passes.
+
+## `Sigmoid` Function
+
+Create a class that implements the logistic sigmoid function.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+It is useful to store the output of forward pass of this layer
+as a class member so that it may be reused when calling `backward`.
+
+## Rectified Linear Unit (ReLU)
+
+Create a class that implements the rectified linear unit.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+## Binary Cross-Entropy Loss
+
+Create a class that implements binary cross-entropy loss. This will be used when classifying the XOR problem.
+The class should inherit the `Layer` class and implement both
+`forward` and `backward` functions.
+
+Feel free to use the code defined in the class examples when integrating this with your library.
+
+## The `Sequential` Class
+
+In order to create a clean interface that includes multiple layers, you will need to create
+a class that contains a list of layers which make up the network.
+The `Sequential` class will contain a list of layers.
+New layers can be added to it by appending them to the current list.
+This class will also inherit from the `Layer` class so that it can call forward
+and backward as required.
+
+## Saving and Loading
+
+Implement a weight saving and loading feature for a constructed network such that all
+model weights can be saved to and loaded form a file. This will enable trained models to
+be stored and shared.
+
+# Testing your library
+
+Construct a neural network with 1 hidden layer of 2 nodes in order to solve the XOR
+problem. Construct the input using `numpy`.
+You can reference the code we used for multi-layer perceptrons in class to help.
+Train and verify that your model can solve the XOR problem.
+
+This may take many attempts to converge to a solution depending on your architecture,
+choice of activation function, learning rate, and other factors. Attempt to solve this
+problem with the architecture described above using sigmoid activations and then again
+using hyperbolic tangent activations. In your notebook, describe which one was easier to
+train for this problem.
+
+Save the weights as `XOR_solved.w`.
+
+## Predicting Trip Duration
+
+In the second part of the assignment, you will use your neural network library to construct
+several networks for taxi trip duration ([link to dataset](https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data)).
+The original dataset does not contain the target values for the test set, so I've created a modified version based only on the test set. This is available for download on Canvas.
+
+You can load and extract the data using the following code:
 
 ```python
-from utils import load_and_prepare_data
+import numpy as np
 
-X_train, y_train, X_test, y_test = load_and_prepare_data()
+dataset = np.load("nyc_taxi_data.npy", allow_pickle=True).item()
+X_train, y_train, X_test, y_test = dataset["X_train"], dataset["y_train"], dataset["X_test"], dataset["y_test"]
 ```
 
-# Linear Discriminant Analysis
+### Dataset Preprocessing
 
-Complete the class definition of `LDA` in `assignment2/models.py`. The `fit` method should estimate the class means and the shared covariance matrix. The `predict` method should use these estimates to make predictions.
+Some of the features in this dataset may not be well formatted for use in a neural network.
+They also may not be useful for predicting the trip duration. You should experiment with
+different features and transformations to see which ones work best. You may also want to
+experiment with different normalization techniques.
 
-As we saw in class, the class means can be estimated as the mean of each class in the training data. The shared covariance matrix can be estimated as the weighted sum of the covariance matrices of each class, where the weight is the number of samples in each class.
+**In a separate document**, describe the features you used and how you transformed them. Include
+any plots that you used to help you make your decisions.
 
-**Class Means**
-$$
-\mu_k = \frac{1}{N_k} \sum_{i=1}^{N_k} X_i
-$$
+### Model Selection
 
-where $N_k$ is the number of samples in class $k$, and $X_i$ is the $i^{\text{th}}$ sample in class $k$.
+In this part, you should experiment with the number of layers and nodes per layer as you wish.
+Use the loss of the validation set to guide your selection of hyperparameters. Experiment
+with at least 3 configurations of hyperparameters, plotting the training and validation
+loss as you train each configuration. Stop training when the loss does not improve after 3
+steps (**early stopping**). In your notebook, include the training/validation plots with each
+choice of hyperparameters.
 
-**Covariance Matrix**
-$$
-\Sigma = \frac{1}{N} \sum_{i=1}^N (X_i - \mu)(X_i - \mu)^T
-$$
+Once you have trained at least 3 different models, evaluate each one on the test set.
+Include the test accuracy with your output.
 
-where $N$ is the number of samples, $X_i$ is the $i^{\text{th}}$ sample, and $\mu$ is the mean of the samples.
+### Benchmark Comparison
 
-In `assignment2/lda_main.py`, use your implementation of LDA to fit the model to the training data and make predictions on the test data. Report the accuracy of your model on the test data. You should evaluate this on both RGB and Grayscale versions of the dataset.
+I trained a simple neural network with 3 layers using ReLU activations. The model trained for 7 epochs until early stopping was triggered. The final score on the test set was **0.513 RMSLE**.
 
-# Quadratic Discriminant Analysis
+I only used the month, day, and hour of the pickup time and dropoff time as features. The location data used as well, but was first normalized.
 
-Complete the class definition of `QDA` in `assignment2/models.py`. The `fit` method should estimate the class means and the class covariance matrices. The `predict` method should use these estimates to make predictions.
+# Submission
 
-**Class Means**
-$$
-\mu_k = \frac{1}{N_k} \sum_{i=1}^{N_k} X_i
-$$
-
-where $N_k$ is the number of samples in class $k$, and $X_i$ is the $i^{\text{th}}$ sample in class $k$.
-
-**Covariance Matrix**
-$$
-\Sigma_k = \frac{1}{N_k} \sum_{i=1}^{N_k} (X_i - \mu_k)(X_i - \mu_k)^T
-$$
-
-where $N_k$ is the number of samples in class $k$, $X_i$ is the $i^{\text{th}}$ sample in class $k$, and $\mu_k$ is the mean of the samples in class $k$.
-
-In `assignment2/qda_main.py`, use your implementation of QDA to fit the model to the training data and make predictions on the test data. Report the accuracy of your model on the test data. You should evaluate this on both RGB and Grayscale versions of the dataset.
-
-# Gaussian Naive Bayes
-
-Complete the class definition of `GaussianNaiveBayes` in `assignment2/models.py`. The `fit` method should estimate the class means and the class variances. The `predict` method should use these estimates to make predictions.
-
-**Class Priors**
-
-The class priors follow the same formula as in LDA and QDA:
-
-$$
-\pi_k = \frac{N_k}{N}
-$$
-
-where $N_k$ is the number of samples in class $k$, and $N$ is the total number of samples.
-
-**Class Conditional Distributions**
-
-For Gaussian Naive Bayes, the class conditional density follows a Gaussian distribution:
-
-$$
-p(x|y=k) = \frac{1}{\sqrt{2\pi\sigma_k^2}} \exp\left(-\frac{(x - \mu_k)^2}{2\sigma_k^2}\right)
-$$
-
-where $\mu_k$ is the mean of the samples in class $k$, and $\sigma_k^2$ is the variance of the samples in class $k$.
-
-In `assignment2/gnb_main.py`, use your implementation of Gaussian Naive Bayes to fit the model to the training data and make predictions on the test data. Report the accuracy of your model on the test data. You should evaluate this on both RGB and Grayscale versions of the dataset.
-
-# Questions
-
-The following questions should be answered in a separate file. It is recommended that you typeset the answers in LaTeX, but this is not required. You may also write your answers on paper and scan them as a PDF.
-
-1. State the maximum likelihood estimates for the parameters of Gaussian Naive Bayes. Do these estimates change if we use grayscale images instead of RGB images? Explain why or why not.
-
-2. The accuracy of QDA using RGB images was lower than that of grayscale images. What assumptions does QDA make that might cause this difference in performance?
-
-3. Both LDA and Gaussian Naive Bayes saw reduced test accuracy on grayscale images compared to RGB images. Why might this be the case (is it the data, the model, or something else)?
-
-4. How many parameters are estimated for each model and each image type (RGB and grayscale)?
+Create a zip file that includes all relevant code (or a single notebook if applicable).
+The TA should be able to easily run the code to reproduce all plots and results.
+Include any additional instructions, if necessary.
