@@ -1,4 +1,4 @@
-from pytorch_lightning.cli import LightningCLI
+from lightning.pytorch.cli import LightningCLI
 
 from data_modules.food101 import Food101DataModule
 from ResNetModel import ResNetModel

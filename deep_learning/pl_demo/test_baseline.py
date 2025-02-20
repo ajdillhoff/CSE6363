@@ -3,7 +3,7 @@ import torch
 from torch import nn
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
-import pytorch_lightning as pl
+import lightning as L
 
 from BaselineModel import BaselineModel
 
@@ -19,7 +19,7 @@ def main(args):
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616))
     ])
 
-    trainer = pl.Trainer()
+    trainer = L.Trainer()
     trainer.test(model, dataloaders=torch.utils.data.DataLoader(CIFAR10("~/Data/CIFAR10/", train=False, download=True, transform=test_transforms), batch_size=256, num_workers=12, shuffle=False))
 
 

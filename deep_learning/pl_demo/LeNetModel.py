@@ -2,10 +2,10 @@ import torch
 from torch import nn
 import torchmetrics
 import torch.nn.functional as F
-import pytorch_lightning as pl
+import lightning as L
 
 
-class LeNetModel(pl.LightningModule):
+class LeNetModel(L.LightningModule):
     def __init__(self):
         super().__init__()
         self.features = nn.Sequential(

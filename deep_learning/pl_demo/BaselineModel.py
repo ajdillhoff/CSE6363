@@ -1,11 +1,11 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-import pytorch_lightning as pl
+import lightning as L
 import torchmetrics
 
 
-class BaselineModel(pl.LightningModule):
+class BaselineModel(L.LightningModule):
     def __init__(self):
         super().__init__()
 

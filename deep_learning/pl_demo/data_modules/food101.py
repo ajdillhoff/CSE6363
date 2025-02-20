@@ -1,10 +1,10 @@
 import torch
 from torchvision import transforms
 from torchvision.datasets import Food101
-import pytorch_lightning as pl
+import lightning as L
 
 
-class Food101DataModule(pl.LightningDataModule):
+class Food101DataModule(L.LightningDataModule):
     def __init__(self, data_dir: str="path/to/dir",
                 batch_size: int=128,
                 num_workers: int=8,

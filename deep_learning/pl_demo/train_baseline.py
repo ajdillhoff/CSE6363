@@ -4,9 +4,9 @@ from torch import nn
 import torch.nn.functional as F
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import ModelCheckpoint
+import lightning as L
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.callbacks import ModelCheckpoint
 
 from BaselineModel import BaselineModel
 
@@ -51,7 +51,7 @@ def main():
         mode="min"
     )
 
-    trainer = pl.Trainer(accelerator='gpu', callbacks=[early_stop_callback, checkpoint_callback])
+    trainer = L.Trainer(accelerator='gpu', callbacks=[early_stop_callback, checkpoint_callback])
     trainer.fit(model=model, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
 
