@@ -1,12 +1,12 @@
 import torchvision.models as models
-import pytorch_lightning as pl
+import lightning as L
 import torchmetrics
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
 
 
-class AlexNetModel(pl.LightningModule):
+class AlexNetModel(L.LightningModule):
     def __init__(self, num_classes, lr=1e-4):
         super().__init__()
         self.num_classes = num_classes

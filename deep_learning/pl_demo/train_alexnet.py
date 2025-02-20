@@ -3,12 +3,15 @@ import os
 import torch
 from torch import nn
 import torch.nn.functional as F
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import ModelCheckpoint
+import lightning as L
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.callbacks import ModelCheckpoint
 
 from data_modules.cifar10 import CIFAR10DataModule
 from AlexNetModel import AlexNetModel
+
+
+torch.set_float32_matmul_precision('medium')
 
 def main(args):
     # Add EarlyStopping
@@ -22,7 +25,7 @@ def main(args):
         mode="min"
     )
 
-    trainer = pl.Trainer(callbacks=[early_stop_callback, checkpoint_callback], max_epochs=-1)
+    trainer = L.Trainer(accelerator='gpu', callbacks=[early_stop_callback, checkpoint_callback], max_epochs=-1)
     cifar10 = CIFAR10DataModule("~/Data/CIFAR10/", batch_size=512, num_workers=8)
 
     model = AlexNetModel(10)
