@@ -1,4 +1,4 @@
-# Assignment 4
+# Deep Learning
 
 This assignment covers image classification with deep learning. You will train and evaluate three different categories of networks on the `Imagenette` dataset. For each model, it is recommended that you implement them using [PyTorch Lightning](http://www.pytorchlightning.ai). Feel free to adapt the code from the [demos we did in class](https://github.com/ajdillhoff/CSE6363/tree/main/deep_learning). A getting started codebase has been provided in this repository.
 
