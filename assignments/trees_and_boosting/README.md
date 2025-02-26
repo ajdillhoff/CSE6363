@@ -1,6 +1,6 @@
 # Trees and Boosting
 
-This assignment covers two ensemble methods and a base model they are both dependent on.RE
+This assignment covers two ensemble methods and a base model they are both dependent on.
 
 # Decision Trees
 
