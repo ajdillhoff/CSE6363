@@ -1,6 +1,6 @@
 # CSE 6363: Assignment 1
 
-This assignment covers Linear Models for regression and classification. Linear Regression is a method of predicting real values given some input. Logistic Regression and Linear Discriminant Analysis will be used as classifiers.
+This assignment covers Linear Models for regression and classification. Linear Regression is a method of predicting real values given some input. Logistic Regression is a method of predicting a label or multiple labels.
 
 These models have been implemented over and over again and are available in many popular machine learning frameworks. It is important to implement the models yourself so that you gain a deeper understanding of them.
 
@@ -10,7 +10,7 @@ Before evaluating any data, we need some code to actually `fit`, `predict`, and 
 
 After implementing these 3 functions, you will be able to use this model simply with any regression task.
 
-## 1.2 The `fit` method
+## 1.1 The `fit` method
 
 The `fit` method should accept 6 parameters:
 1. the input data
@@ -24,7 +24,7 @@ Other parameters can be added as long as they are optional.
 
 This method should use gradient descent to optimize the model parameters using mean squared error as the loss function. So that the model will converge to a solution, early stopping must be used. To do this, set aside 10% of the training data as a validation set. After each step of gradient descent, evaluate the loss on the validation set. If the loss on the validation set increases for 3 consecutive steps, stop training. If it decreases, save the current model parameters. After training is complete, used the saved parameters to set the model parameters.
 
-## 1.3 The `predict` method
+## 1.2 The `predict` method
 
 The `predict` method should accept 1 parameter:
 1. the input data
@@ -35,7 +35,7 @@ $$
 \mathbf{y} = X W + \mathbf{b} \in \mathbb{R}^{n \times m}
 $$
 
-## 1.4 The `score` method
+## 1.3 The `score` method
 
 The `score` method should accept 2 parameters:
 1. the input data
@@ -49,19 +49,19 @@ $$
 
 where $n$ is the number of samples, $m$ is the output size, $y_i$ is the target value for the $i$th sample, and $\hat{y}_i$ is the predicted value for the $i$th sample.
 
-## 1.5 Saving and Loading Weights
+## 1.4 Saving and Loading Weights
 
 After training, the model parameters should be saved to a file. The `save` method should accept a file path. This method should save the model parameters to the given file path. The model parameters should be saved in a format that can be easily loaded back into the model.
 
 The `load` method should also accept a file path and load the model parameters accordingly.
 
-## 1.6 Regression with a single output
+## 1.5 Regression with a single output
 
 The Iris flower dataset (https://en.wikipedia.org/wiki/Iris_flower_data_set) was organized by Ronald Fisher in 1936. It is a commonly used dataset for introductory machine learning concepts. You will use this dataset for fitting and evaluating your regression model.
 
 **The training and testing should be contained in a single evaluation script so that the results can be easily reproduced.**
 
-### 1.6.1 Preparing the Data
+### 1.5.1 Preparing the Data
 
 Much of machine learning is in understanding the data you are working with. For our regression task, we want to predict continuous outputs given some input feature(s).
 
@@ -77,7 +77,7 @@ In this section of the assignment, you will create 4 different regression models
 
 To begin, load the data using `scikit-learn`. In order to verify the models that you will create in the following two sections, you will need to take some portion of the dataset and reserve it for testing. Randomly select 10% of the dataset, ensuring an even split of each class. This will be your **test** set. Note that this is different than the random 10% that is taken from the training set when in the `fit` method. The rest of the data will serve as your **training** set.
 
-### 1.6.2 Training
+### 1.5.2 Training
 
 Select 4 different combinations of input and output features to use to train 4 different models. For example, one model could predict the petal width given petal length and sepal width. Another could predict sepal length using only petal features. It does not matter which combination you choose as long as you have 4 unique combinations.
 
@@ -89,19 +89,21 @@ As each model trains, record the loss averaged over the batch size for each **st
 
 **After each model trains, plot the loss against the step number and save it. These plots should also be added to your report.**
 
+### 1.5.3 Regularization
+
 To observe the effects of regularization, pick one of your trained models and inspect the weights. Train an identical model again, except this time you will add L2 regularization to the loss. Record the difference in parameters between the regularized and non-regularized model.
 
 **Record these values into your report so they can be verified.**
 
 Create a separate training script for each model that you created. Name the scripts `train_regression1.py`, `train_regression2.py`, etc. This should include training the model, saving the model parameters, and plotting the loss.
 
-### 1.6.3 Testing
+### 1.5.4 Testing
 
 For each model you created, test its performance on unseen data by evaluating the mean squared error against the test dataset that you set aside previously. This should be implemented as 4 separate scripts. Each script should load the model parameters from the respective model and then evaluate the model on the test set. The mean squared error should be printed to the console. Name the scripts `eval_regression1.py`, `eval_regression2.py`, etc.
 
 In your report, briefly describe which input feature is most predictive of its corresponding output feature based on your experiments.
 
-## 1.7 Regression with Multiple Outputs
+## 1.6 Regression with Multiple Outputs
 
 In the previous section, you created 4 different regression models. Each model predicted a single output value given some input features. In this section, you will create a single model that predicts the petal length and width given the sepal length and width.
 
@@ -142,21 +144,9 @@ For the first two, include visualizations of the classifier using `plot_decision
 
 For the first classifier, implement a `LogisticRegression` class similar to how the `LinearRegression` class was implemented. The `fit` method should use either the normal equations or gradient descent to come up with an optimal set of parameters.
 
-## 2.2 Linear Discriminant Analysis
+## 2.2 Testing
 
-The second model you will explore in this assignment is Linear Discriminant Analysis. Implement both a `fit` and `predict` method following the details [https://ajdillhoff.github.io/notes/linear_discriminant_analysis/](described here.)
-
-The parameter update equations were derived via Maximum Likelihood Estimation and can be estimated directly from the data. You do not need to create a covariance matrix for each class. Instead, use a shared covariance matrix which is computed as
-
-$$
-\Sigma = \frac{1}{n} \sum_{k=1}^K n_k \Sigma_k,
-$$
-
-where $n$ is the total number of samples, $n_k$ is the number of samples belonging to class $k$, and $\Sigma_k$ is the covariance matrix for class $k$.
-
-## 2.3 Testing
-
-For each trained model, compute the accuracy on the test set that was set aside for each data variant. Since there are 3 variants, there should be 3 comparisons of Logistic Regression versus LDA. Implement each variant evaluation as a separate script. Name the scripts `eval_classifiers1.py`, `eval_classifiers2.py`, etc.
+For each trained model, compute the accuracy on the test set that was set aside for each data variant. Since there are 3 variants, there should be 3 comparisons of Logistic Regression. Implement each variant evaluation as a separate script. Name the scripts `eval_classifier1.py`, `eval_classifier2.py`, etc.
 
 These scripts should load the best trained weights, evaluate the accuracy on the test set, and print the accuracy to the console.
 
@@ -164,4 +154,40 @@ These scripts should load the best trained weights, evaluate the accuracy on the
 
 Create a zip file that includes all of your code as well as your report. The TA should
 be able to easily run the code to reproduce all plots and results. Include any additional
-instructions, if necessary.
+instructions, if necessary. The report does not need to have a lot of explanation. The plots from each task should be included in order.
+
+**DO NOT FORGET TO ANSWER THE QUESTIONS IN THE QUESTIONS FILE.**
+
+Your final submission should include the following files:
+1. `LinearRegression.py`
+2. `LogisticRegression.py`
+3. `train_regression1.py`
+4. `train_regression2.py`
+5. `train_regression3.py`
+6. `train_regression4.py`
+7. `eval_regression1.py`
+8. `eval_regression2.py`
+9. `eval_regression3.py`
+10. `eval_regression4.py`
+10. `train_classifier1.py`
+11. `train_classifier2.py`
+12. `train_classifier3.py`
+13. `eval_classifier1.py`
+14. `eval_classifier2.py`
+15. `eval_classifier3.py`
+16. Report File (docx, txt, or pdf)
+
+Alternatively, you can submit a Jupyter notebook for both the regression and classification tasks, but ensure that the notebook is well-organized and includes all necessary code and explanations. In that case, your submission should include:
+
+1. `LinearRegression.py`
+2. `LogisticRegression.py`
+3. `regression_tasks.ipynb`
+4. `classification_tasks.ipynb`
+5. Report File (docx, txt, or pdf)
+
+# Grading
+
+The assignment will be graded based on the following criteria:
+1. Implementation (70%) - The code should be implemented correctly and should run without errors. The models should be trained and evaluated correctly.
+2. Report (10%) - The report should include all plots and results. The plots should be clear and easy to read.
+3. Questions (20%) - The questions in the Questions.md file should be answered correctly. The answers should be clear and concise. **The answers to these must be in your own words.**
