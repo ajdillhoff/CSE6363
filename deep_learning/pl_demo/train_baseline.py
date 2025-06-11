@@ -26,8 +26,8 @@ def main():
 
     train_dataset = CIFAR10("~/Data/CIFAR10/", train=True, download=True, transform=train_transforms)
 
-    # Use 10% of the training set for validation
-    train_set_size = int(len(train_dataset) * 0.9)
+    # Use 5% of the training set for validation
+    train_set_size = int(len(train_dataset) * 0.95)
     val_set_size = len(train_dataset) - train_set_size
 
     seed = torch.Generator().manual_seed(42)
@@ -35,8 +35,8 @@ def main():
     val_dataset.dataset.transform = test_transforms
 
     # Use DataLoader to load the dataset
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=256, num_workers=8, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=256, num_workers=8, shuffle=False)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=256, num_workers=12, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=256, num_workers=12, shuffle=False)
 
     model = BaselineModel()
 
