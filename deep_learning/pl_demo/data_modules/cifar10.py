@@ -6,8 +6,8 @@ import lightning as L
 
 class CIFAR10DataModule(L.LightningDataModule):
     def __init__(self, data_dir: str="path/to/dir",
-                batch_size: int=128,
-                num_workers: int=8):
+                batch_size: int=256,
+                num_workers: int=12):
         super().__init__()
         self.data_dir = data_dir
         self.batch_size = batch_size
@@ -33,8 +33,8 @@ class CIFAR10DataModule(L.LightningDataModule):
 
             train_dataset = CIFAR10(self.data_dir, train=True, download=True, transform=train_transforms)
 
-            # Use 10% of the training set for validation
-            train_set_size = int(len(train_dataset) * 0.9)
+            # Use 5% of the training set for validation
+            train_set_size = int(len(train_dataset) * 0.95)
             val_set_size = len(train_dataset) - train_set_size
 
             seed = torch.Generator().manual_seed(42)
