@@ -34,7 +34,8 @@ The backward pass should compute the gradient with respect to the weights and bi
 
 $$
 \frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{x}\\
-\frac{d}{d\mathbf{w}} f(\mathbf{x}; \mathbf{w}) = \mathbf{1}
+
+\frac{d}{d\mathbf{b}} f(\mathbf{x}; \mathbf{w}) = \mathbf{1}
 $$
 
 This is then multiplied with the gradients computed by the layer ahead of this one.
