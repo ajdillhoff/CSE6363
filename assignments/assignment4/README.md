@@ -2,7 +2,7 @@
 
 ## (40 points) Part 1: Q-Learning and Policy Iteration on the Frozen Lake Environment
 
-In this part of the assignment, you will implement a basic version of Q-Learning on the Frozen Lake environment, following the tutorial provided [here](https://gymnasium.farama.org/tutorials/training_agents/FrozenLake_tuto/).
+In this part of the assignment, you will implement a basic version of Q-Learning on the Frozen Lake environment, following the tutorial provided [here](https://gymnasium.farama.org/tutorials/training_agents/frozenlake_q_learning/).
 The main purpose is to familiarize yourself with using the RL Gym library. In part 2, we will be using an environment of your choosing.
 
 **Objective**: Implement a Q-Learning agent to solve the Frozen Lake environment.
