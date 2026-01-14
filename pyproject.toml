@@ -1,0 +1,11 @@
+[project]
+name = "cse6363"
+version = "0.1.0"
+description = "Packages required to run the examples in this repository."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.1",
+    "scikit-learn>=1.8.0",
+]
