@@ -1,4 +1,4 @@
-# CSE 6363: Assignment 1
+# CSE 4309: Assignment 1 - Linear Models
 
 This assignment covers Linear Models for regression and classification. Linear Regression is a method of predicting real values given some input. Logistic Regression is a method of predicting a label or multiple labels.
 
