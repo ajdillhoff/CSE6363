@@ -26,7 +26,7 @@ def main(args):
     )
 
     trainer = L.Trainer(accelerator='gpu', callbacks=[early_stop_callback, checkpoint_callback], max_epochs=-1)
-    cifar10 = CIFAR10DataModule("~/Data/CIFAR10/", batch_size=512, num_workers=8)
+    cifar10 = CIFAR10DataModule("~/Data/CIFAR10/", batch_size=256, num_workers=12)
 
     model = AlexNetModel(10)
     trainer.fit(model=model, datamodule=cifar10)

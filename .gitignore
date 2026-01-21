@@ -136,3 +136,7 @@ saved_models/
 
 archive/
 data/
+
+media/
+*.pth
+Data/
