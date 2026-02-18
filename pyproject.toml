@@ -5,7 +5,9 @@ description = "Packages required to run the examples in this repository."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "kagglehub>=1.0.0",
     "matplotlib>=3.10.8",
     "numpy>=2.4.1",
+    "pandas>=3.0.1",
     "scikit-learn>=1.8.0",
 ]
