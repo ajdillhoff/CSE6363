@@ -54,7 +54,6 @@ class BaselineModel(L.LightningModule):
         self.accuracy(y_hat, y)
 
         self.log("test_accuracy", self.accuracy)
-        self.log("test_loss", loss)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
