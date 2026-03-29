@@ -1,19 +1,12 @@
 [project]
 name = "cse6363"
 version = "0.1.0"
-description = "Packages required to run the examples in this repository."
+description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
-    "ipywidgets>=8.1.8",
-    "kagglehub>=1.0.0",
-    "lightning>=2.6.1",
     "matplotlib>=3.10.8",
-    "numpy>=2.4.1",
-    "pandas>=3.0.1",
-    "scikit-learn>=1.8.0",
-    "setuptools<82",
-    "tensorboard>=2.20.0",
-    "torch>=2.10.0",
-    "torchvision>=0.25.0",
+    "numpy>=2.4.4",
+    "torch>=2.11.0",
+    "torchvision>=0.26.0",
 ]
